@@ -4,6 +4,19 @@ let productos = [];
 
 const API_URL = "https://basketteniss-api.onrender.com";
 
+let ADMIN_USER = localStorage.getItem("ADMIN_USER");
+let ADMIN_PASS = localStorage.getItem("ADMIN_PASS");
+
+function loginAdmin() {
+  ADMIN_USER = document.getElementById("adminUser").value;
+  ADMIN_PASS = document.getElementById("adminPass").value;
+
+  localStorage.setItem("ADMIN_USER", ADMIN_USER);
+  localStorage.setItem("ADMIN_PASS", ADMIN_PASS);
+
+  alert("✅ Acceso guardado");
+}
+
 
 // =========================
 // 🔄 CARGAR PRODUCTOS
@@ -129,6 +142,11 @@ async function agregarProducto(e) {
 
       method: "POST",
 
+      headers: {
+        "admin-user": ADMIN_USER,
+        "admin-pass": ADMIN_PASS
+    },
+
       body: formData
 
     });
@@ -166,7 +184,12 @@ async function eliminarProducto(id) {
 
     const res = await fetch(`${API_URL}/productos/${id}`, {
 
-      method: "DELETE"
+      method: "DELETE",
+
+      headers: {
+        "admin-user": ADMIN_USER,
+        "admin-pass": ADMIN_PASS
+      }
 
     });
 
