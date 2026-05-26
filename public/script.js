@@ -2,8 +2,10 @@ console.log("🔥 TIENDA CARGADA");
 
 let productos = [];
 
+const API_URL = "https://basketteniss-api.onrender.com";
+
 async function cargarProductos() {
-  const res = await fetch("/productos");
+  const res = await fetch(`${API_URL}/productos`);
   productos = await res.json();
 
   renderProductos(productos);

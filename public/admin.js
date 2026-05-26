@@ -2,6 +2,9 @@ console.log("🔥 ADMIN JS CONECTADO 🔥");
 
 let productos = [];
 
+const API_URL = "https://basketteniss-api.onrender.com";
+
+
 // =========================
 // 🔄 CARGAR PRODUCTOS
 // =========================
@@ -9,7 +12,7 @@ async function cargarProductos() {
 
   try {
 
-    const res = await fetch("/productos");
+    const res = await fetch(`${API_URL}/productos`);
 
     if (!res.ok) {
       throw new Error("Error al cargar productos");
@@ -122,7 +125,7 @@ async function agregarProducto(e) {
     formData.append("tipo", tipo);
     formData.append("imagen", imagen);
 
-    const res = await fetch("/productos", {
+    const res = await fetch(`${API_URL}/productos`, {
 
       method: "POST",
 
@@ -161,7 +164,7 @@ async function eliminarProducto(id) {
 
   try {
 
-    const res = await fetch(`/productos/${id}`, {
+    const res = await fetch(`${API_URL}/productos/${id}`, {
 
       method: "DELETE"
 
