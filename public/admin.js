@@ -16,7 +16,7 @@ function loginAdmin() {
 
   alert("✅ Acceso guardado");
 }
-
+document.getElementById("formulario").style.display = "block";
 
 // =========================
 // 🔄 CARGAR PRODUCTOS
