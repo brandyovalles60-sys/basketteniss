@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1779409066739,
+    "nombre": "nike ",
+    "marca": "nike",
+    "precio": "5555",
+    "categoria": "Nike",
+    "tipo": "Tenis",
+    "descripcion": "",
+    "imagen": "/uploads/1779409066704.jpg"
+  },
+  {
+    "id": 1779409113424,
+    "nombre": "yy",
+    "marca": "jordan ",
+    "precio": "5555",
+    "categoria": "Jordan",
+    "tipo": "Tenis",
+    "descripcion": "",
+    "imagen": "/uploads/1779409113418.jpeg"
+  },
+  {
+    "id": 1779409148300,
+    "nombre": "tt",
+    "marca": "addidas",
+    "precio": "5555",
+    "categoria": "Adidas",
+    "tipo": "Ropa",
+    "descripcion": "",
+    "imagen": "/uploads/1779409148290.jpeg"
+  },
+  {
+    "id": 1779409188888,
+    "nombre": "ooo",
+    "marca": "puma",
+    "precio": "777",
+    "categoria": "Puma",
+    "tipo": "Accesorios",
+    "descripcion": "",
+    "imagen": "/uploads/1779409188883.jpg"
+  }
+]

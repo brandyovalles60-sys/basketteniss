@@ -1,0 +1,230 @@
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BasketTeniss</title>
+
+  <link rel="stylesheet" href="style.css">
+  </head>
+
+
+  
+
+
+
+<body>
+
+  <div id="intro-screen">
+
+  <video id="intro-video" autoplay muted playsinline>
+    <source src="./video/BasketTeniss_Completo_Premium (1).mp4" type="video/mp4">
+  </video>
+
+  <button id="continue-btn">
+    Continuar
+  </button>
+
+</div>
+
+
+
+<h2 style="position:absolute;left:-9999px">BasketTeniss — Tienda en línea de ropa y accesorios</h2>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<nav class="nav">
+  <span class="logo-text">BASKETTENISS</span>
+
+  <div class="nav-links">
+    <a onclick="scrollToSection('inicio')">Inicio</a>
+    <a onclick="scrollToSection('marcas')">Productos</a>
+    <a onclick="abrirContacto()">Contacto</a>
+  </div>
+
+  <div class="nav-actions">
+    <button class="settings-btn" onclick="toggleSettings()">⋮</button>
+
+    <button class="cart-btn" onclick="openCart()">
+      🛒 <span id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<div class="settings-menu" id="settings-menu">
+  <button onclick="activarModo('claro')">☀️ Modo claro</button>
+  <button onclick="activarModo('oscuro')">🌙 Modo oscuro</button>
+  <button onclick="scrollToSection('marcas')">🏷️ Ver marcas</button>
+  <button onclick="scrollToSection('productos')">🛍️ Ver productos</button>
+</div>
+
+
+
+</div>
+
+<div class="hero" id="inicio">
+  <img id="heroImg" src="img/logobaskettenis.jpg" alt="BasketTeniss"> 
+     
+</div>
+
+<div class="section" id="marcas">
+
+  <h2 class="section-title">
+    Marcas
+  </h2>
+
+  <div class="grid-marcas">
+
+    <div class="marca-card" onclick="filtrarMarca('Nike')">
+
+      <img src="img/Nike.jpg">
+
+      <h3>Nike</h3>
+
+    </div>
+
+    <div class="marca-card" onclick="filtrarMarca('Jordan')">
+
+      <img src="img/Jordan.jpg">
+
+      <h3>Jordan</h3>
+
+    </div>
+
+    <div class="marca-card" onclick="filtrarMarca('Adidas')">
+
+      <img src="img/Addidas.jpg">
+
+      <h3>Adidas</h3>
+
+    </div>
+
+    <div class="marca-card" onclick="filtrarMarca('Puma')">
+
+      <img src="img/Puma.jpg">
+
+      <h3>Puma</h3>
+
+    </div>
+
+    <div class="marca-card" onclick="filtrarMarca('Under Armour')">
+
+      <img src="img/underarmour.jpg">
+
+      <h3>Under Armour</h3>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="section productos-section" id="productos" style="display:none;">
+
+  <h2 class="section-title" id="titulo-productos">Productos</h2>
+  <div class="mini-categorias">
+
+  <button class="mini-btn active"
+    onclick="filtrarTipo('Todos', this)">
+    Todos
+  </button>
+
+  <button class="mini-btn"
+    onclick="filtrarTipo('Tenis', this)">
+    Tenis
+  </button>
+
+  <button class="mini-btn"
+    onclick="filtrarTipo('Ropa', this)">
+    Ropa
+  </button>
+
+  <button class="mini-btn"
+    onclick="filtrarTipo('Accesorios', this)">
+    Accesorios
+  </button>
+
+</div>
+    Productos
+  
+
+  <div id="grid-productos" class="grid"></div>
+
+</div>
+<div class="contact-popup" id="contacto-popup">
+  <div class="contact-card">
+    <button class="close-btn" onclick="cerrarContacto()">✕</button>
+
+    <h2>Contáctanos</h2>
+    <p>Elige dónde quieres escribirnos</p>
+
+    <div class="contact-links">
+      <a href="https://wa.me/18494250473" target="_blank">💬 WhatsApp</a>
+      <a href="https://www.instagram.com/basketteniss?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">📸 Instagram</a>
+      <a href="https://www.tiktok.com/@basketteniss?is_from_webapp=1&sender_device=pc" target="_blank">🎵 TikTok</a>
+      <a href="https://www.facebook.com/810524245487141?ref=PROFILE_EDIT_xav_ig_profile_page_web" target="_blank">🛒 Marketplace</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Agregado al carrito</div>
+
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <p>Tu carrito</p>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="total-row">
+      <p>Total</p>
+      <span id="total">RD$ 0</span>
+    </div>
+    <button class="wa-btn" onclick="sendWA()">💬 Pedir por WhatsApp</button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script src="script.js"></script>
+
+<script>
+
+const intro =
+document.getElementById("intro-screen");
+
+const btn =
+document.getElementById("continue-btn");
+
+btn.addEventListener("click", ()=>{
+
+  intro.style.transition =
+  "0.8s";
+
+  intro.style.opacity = "0";
+
+  setTimeout(()=>{
+
+    intro.style.display = "none";
+
+  },800);
+
+});
+
+</script>
+
+
+</body>
+</html>

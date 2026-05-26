@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasketTeniss — Tienda en Línea</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+        *{box-sizing:border-box;margin:0;padding:0; font-family: 'Archivo Black', sans-serif;}
+        :root{
+            --brand:#E52B15;
+            --brand-dark:#b82010;
+            --brand-light:#fde8e5;
+            --color-border-tertiary:#eee;
+            --color-border-secondary:#ccc;
+            --color-text-primary:#111;
+            --color-text-secondary:#666;
+            --color-background-primary:#ffffff;
+            --border-radius-md:8px;
+            --border-radius-lg:12px;
+        }
+
+        .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary); position: sticky; top:0; z-index: 1000;}
+        .logo-text{font-size:20px;font-weight:500;color:var(--brand);letter-spacing:2px}
+        .nav-links{display:flex;gap:1.5rem}
+        .nav-links a{font-size:13px;color:var(--color-text-secondary);text-decoration:none;cursor:pointer}
+        .nav-links a:hover{color:var(--brand)}
+        .cart-btn{display:flex;align-items:center;gap:6px;background:var(--brand);color:#fff;border:none;padding:8px 16px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer}
+
+        .hero { position: relative; width: 100%; height: 350px; overflow: hidden; background: #000; }
+        .hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .hero-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; }
+
+        .section{padding:2rem 1.5rem}
+        .section-title{font-size:18px; margin-bottom:1.25rem; text-transform: uppercase;}
+        
+        /* Filtros de Marcas */
+        .cats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:2rem}
+        .cat{padding:8px 18px;border-radius:999px;border:1px solid var(--color-border-secondary);font-size:12px;cursor:pointer; transition: 0.3s;}
+        .cat.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+        /* Grid de Productos */
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
+        .card{border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden; transition: 0.3s;}
+        .card:hover{transform: translateY(-5px); border-color: var(--brand);}
+        .card-img { width:100%; height:200px; overflow:hidden; background:#f9f9f9; }
+        .card-img img { width:100%; height:100%; object-fit: cover; }
+        .card-body{padding:15px}
+        .card-name{font-size:14px; margin-bottom:4px; display: block;}
+        .card-brand{font-size:11px; color:var(--color-text-secondary); text-transform: uppercase;}
+        .card-foot{display:flex;align-items:center;justify-content:space-between; margin-top:10px}
+        .price{font-size:16px; color:var(--brand)}
+        .add-btn{background:var(--brand);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer; font-size:11px;}
+
+        /* Carrito */
+        .cart-panel{position:fixed;top:0;right:-350px;width:320px;height:100%;background:#fff;box-shadow:-5px 0 15px rgba(0,0,0,0.1);z-index:2000;transition: 0.4s; display:flex; flex-direction:column;}
+        .cart-panel.open{right:0;}
+        .cart-header{padding:1.5rem; border-bottom:1px solid #eee; display:flex; justify-content:space-between;}
+        .cart-items{flex:1; overflow-y:auto; padding:1rem;}
+        .cart-footer{padding:1.5rem; border-top:1px solid #eee;}
+        .wa-btn{width:100%; background:#25D366; color:#fff; border:none; padding:15px; border-radius:8px; cursor:pointer; font-size:14px;}
+        .overlay{position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; z-index:1500;}
+        .overlay.open{display:block;}
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <span class="logo-text">BASKETTENISS</span>
+    <div class="nav-links">
+        <a href="#">Inicio</a>
+        <a href="#productos">Catálogo</a>
+    </div>
+    <button class="cart-btn" onclick="toggleCart(true)">🛒 <span id="cart-count">0</span></button>
+</nav>
+
+<div class="hero">
+    <!-- Pon aquí el link de tu imagen de portada principal -->
+    <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=2000" alt="Banner">
+    <div class="hero-overlay">
+        <h1>NUEVA COLECCIÓN 2026</h1>
+        <p>Las mejores marcas en un solo lugar</p>
+    </div>
+</div>
+
+<section class="section" id="productos">
+    <h2 class="section-title">Nuestras Marcas</h2>
+    <div class="cats" id="brand-filters">
+        <!-- Las marcas se cargan solas aquí -->
+    </div>
+
+    <h2 class="section-title">Catálogo de Productos</h2>
+    <div class="grid" id="product-grid">
+        <!-- Los productos se cargan solos aquí -->
+    </div>
+</section>
+
+<!-- Panel del Carrito -->
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+        <p>Tu Carrito</p>
+        <button onclick="toggleCart(false)" style="background:none; border:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+        <!-- Items agregados -->
+    </div>
+    <div class="cart-footer">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+            <span>Total:</span>
+            <span id="cart-total" style="color:var(--brand)">$0.00</span>
+        </div>
+        <button class="wa-btn" onclick="sendWhatsApp()">Pedir por WhatsApp 📱</button>
+    </div>
+</div>
+
+<script>
+    /** 
+     * SECCIÓN ATOMIZADA: EDITA SOLO AQUÍ 
+     * Solo agrega o quita productos de esta lista.
+     **/
+    const PRODUCTOS = [
+        { id: 1, marca: "Jordan", nombre: "Retro 4 Military Blue", precio: 180, img: "PON_AQUI_LINK_DE_IMAGEN" },
+        { id: 2, marca: "Adidas", nombre: "Forum Low White", precio: 110, img: "PON_AQUI_LINK_DE_IMAGEN" },
+        { id: 3, marca: "Nike", nombre: "Air Force 1 '07", precio: 120, img: "PON_AQUI_LINK_DE_IMAGEN" },
+        { id: 4, marca: "Jordan", nombre: "Air Jordan 1 High OG", precio: 190, img: "PON_AQUI_LINK_DE_IMAGEN" },
+        { id: 5, marca: "Nike", nombre: "Dunk Low Panda", precio: 115, img: "PON_AQUI_LINK_DE_IMAGEN" },
+        // Puedes agregar más siguiendo el mismo formato
+    ];
+
+    let carrito = [];
+
+    // Función para renderizar marcas y productos
+    function cargarTienda(filtro = 'Todas') {
+        const grid = document.getElementById('product-grid');
+        const filters = document.getElementById('brand-filters');
+        
+        // 1. Crear filtros de marcas únicos
+        const marcas = ['Todas', ...new Set(PRODUCTOS.map(p => p.marca))];
+        filters.innerHTML = marcas.map(m => `
+            <div class="cat ${filtro === m ? 'active' : ''}" onclick="cargarTienda('${m}')">${m}</div>
+        `).join('');
+
+        // 2. Filtrar y mostrar productos
+        const productosFiltrados = filtro === 'Todas' ? PRODUCTOS : PRODUCTOS.filter(p => p.marca === filtro);
+        
+        grid.innerHTML = productosFiltrados.map(p => `
+            <div class="card">
+                <div class="card-img">
+                    <img src="${p.img}" alt="${p.nombre}" onerror="this.src='https://placehold.co/400x400?text=Subir+Foto'">
+                </div>
+                <div class="card-body">
+                    <span class="card-brand">${p.marca}</span>
+                    <strong class="card-name">${p.nombre}</strong>
+                    <div class="card-foot">
+                        <span class="price">$${p.precio}</span>
+                        <button class="add-btn" onclick="agregarAlCarrito(${p.id})">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function agregarAlCarrito(id) {
+        const prod = PRODUCTOS.find(p => p.id === id);
+        carrito.push(prod);
+        actualizarCarrito();
+        toggleCart(true);
+    }
+
+    function actualizarCarrito() {
+        const container = document.getElementById('cart-items');
+        const count = document.getElementById('cart-count');
+        const total = document.getElementById('cart-total');
+        
+        count.innerText = carrito.length;
+        
+        if(carrito.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#999; margin-top:20px;">Tu carrito está vacío</p>';
+            total.innerText = "$0.00";
+            return;
+        }
+
+        let suma = 0;
+        container.innerHTML = carrito.map((p, index) => {
+            suma += p.precio;
+            return `
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center; font-size:12px; border-bottom:1px solid #f5f5f5; padding-bottom:5px;">
+                    <div><strong>${p.marca}</strong> - ${p.nombre}</div>
+                    <div>$${p.precio} <button onclick="quitarDelCarrito(${index})" style="background:none; border:none; color:red; cursor:pointer; margin-left:10px;">✕</button></div>
+                </div>
+            `;
+        }).join('');
+        
+        total.innerText = `$${suma.toFixed(2)}`;
+    }
+
+    function quitarDelCarrito(index) {
+        carrito.splice(index, 1);
+        actualizarCarrito();
+    }
+
+    function toggleCart(show) {
+        document.getElementById('cart-panel').classList.toggle('open', show);
+        document.getElementById('overlay').classList.toggle('open', show);
+    }
+
+    function sendWhatsApp() {
+        if(carrito.length === 0) return;
+        const numero = "TU_NUMERO_AQUI"; // Ejemplo: 1234567890
+        let mensaje = "Hola BasketTeniss! Quisiera comprar:\n\n";
+        carrito.forEach(p => mensaje += `- ${p.marca} ${p.nombre} ($${p.precio})\n`);
+        mensaje += `\n*Total: ${document.getElementById('cart-total').innerText}*`;
+        
+        window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`);
+    }
+
+    // Iniciar carga
+    cargarTienda();
+</script>
+
+</body>
+</html>
