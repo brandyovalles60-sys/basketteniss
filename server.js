@@ -53,10 +53,23 @@ app.get("/productos", (req, res) => {
   res.json(leerProductos());
 });
 
+
+
+function verificarAdmin(req, res, next) {
+  const user = req.headers["admin-user"];
+  const pass = req.headers["admin-pass"];
+
+  if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
+    next();
+  } else {
+    res.status(401).json({ error: "No autorizado" });
+  }
+}
+
 // ==========================
 // POST (CON IMAGEN + DATOS)
 // ==========================
-app.post("/productos", upload.single("imagen"), (req, res) => {
+app.post("/productos", verificarAdmin, upload.single("imagen"), (req, res) => {
   console.log("🔥 SERVER RECIBIÓ PETICIÓN");
   console.log(req.body);
   console.log(req.file);
@@ -88,7 +101,7 @@ app.post("/productos", upload.single("imagen"), (req, res) => {
 // ==========================
 // DELETE (BIEN HECHO)
 // ==========================
-app.delete("/productos/:id", (req, res) => {
+app.delete("/productos/:id", verificarAdmin, (req, res) => {
   const id = Number(req.params.id);
 
   const productos = leerProductos().filter(p => p.id !== id);
@@ -99,7 +112,10 @@ app.delete("/productos/:id", (req, res) => {
 });
 
 // ==========================
-app.listen(3000, () => {
-  console.log("Servidor listo en puerto 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Servidor listo en puerto " + PORT);
 });
+
 
