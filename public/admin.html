@@ -1,18 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
-  <title>Panel Admin - Productos</title>
+  <title>Panel Admin - BasketTeniss</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <h1 style="color:red;">VERSION NUEVA</h1>
-
-<h2>Agregar producto</h2>
 
 <div id="login-admin">
   <h2>Acceso Admin</h2>
@@ -22,96 +18,49 @@
 
   <button type="button" onclick="loginAdmin()">Entrar</button>
 </div>
+
 <div id="admin-panel" style="display:none;">
-<form id="formulario">
 
-  <input
-    id="nombre"
-    name="nombre"
-    placeholder="Nombre del producto"
-    required
-  >
+  <h2>Agregar producto</h2>
 
-  <input
-    id="marca"
-    name="marca"
-    placeholder="Marca"
-    required
-  >
+  <form id="formulario">
 
-  <input
-    id="precio"
-    name="precio"
-    type="number"
-    placeholder="Precio"
-    required
-  >
+    <input id="nombre" name="nombre" placeholder="Nombre del producto" required>
+    <input id="marca" name="marca" placeholder="Marca" required>
+    <input id="precio" name="precio" type="number" placeholder="Precio" required>
 
-  <select
-    id="categoria"
-    name="categoria"
-    required
-  >
+    <select id="categoria" name="categoria" required>
+      <option value="">Seleccionar categoría</option>
+      <option value="Nike">Nike</option>
+      <option value="Jordan">Jordan</option>
+      <option value="Adidas">Adidas</option>
+      <option value="Puma">Puma</option>
+      <option value="Under Armour">Under Armour</option>
+    </select>
 
-    <option value="">
-      Seleccionar categoría
-    </option>
+    <select id="tipo" name="tipo" required>
+      <option value="">Tipo de artículo</option>
+      <option value="Tenis">Tenis</option>
+      <option value="Ropa">Ropa deportiva</option>
+      <option value="Accesorios">Accesorios</option>
+    </select>
 
-    <option value="Nike">Nike</option>
-    <option value="Jordan">Jordan</option>
-    <option value="Adidas">Adidas</option>
-    <option value="Puma">Puma</option>
-    <option value="Under Armour">Under Armour</option>
+    <textarea id="descripcion" name="descripcion" placeholder="Descripción"></textarea>
 
-  </select>
+    <input type="file" id="imagen" name="imagen" required>
 
-  <select id="tipo" name="tipo" required>
+    <div class="preview-box">
+      <img id="preview-img" src="" alt="">
+    </div>
 
-  <option value="">
-    Tipo de artículo
-  </option>
+    <button type="submit">Agregar</button>
 
-  <option value="Tenis">
-    Tenis
-  </option>
+  </form>
 
-  <option value="Ropa">
-    Ropa deportiva
-  </option>
+  <hr>
 
-  <option value="Accesorios">
-  Accesorios
-</option>
-
-</select>
-
-  <textarea
-    id="descripcion"
-    name="descripcion"
-    placeholder="Descripción"
-  ></textarea>
-
-  <input
-    type="file"
-    id="imagen"
-    name="imagen"
-    required
-  >
-  <div class="preview-box">
-    <img id="preview-img" src="" alt="">
-  </div>
-
-  <button type="submit">
-    Agregar
-  </button>
-
-</form>
-
-<hr>
-
-<h2>Lista de productos</h2>
-
-<div id="lista"></div>
+  <h2>Lista de productos</h2>
+  <div id="lista"></div>
 
 </div>
 
