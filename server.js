@@ -95,7 +95,9 @@ app.post("/productos", verificarAdmin, upload.single("imagen"), (req, res) => {
     categoria,
     tipo,
     descripcion: descripcion || "",
-    imagen: req.file ? `/uploads/${req.file.filename}` : ""
+    imagen: req.file
+      ? `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`
+      : ""
   };
 
   productos.push(nuevo);
