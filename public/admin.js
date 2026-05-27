@@ -15,11 +15,11 @@ function loginAdmin() {
   localStorage.setItem("ADMIN_PASS", ADMIN_PASS);
 
   alert("✅ Acceso guardado");
-}
-document.getElementById("login-admin").style.display = "none";
-document.getElementById("admin-panel").style.display = "block";
-cargarProductos();
 
+  document.getElementById("login-admin").style.display = "none";
+  document.getElementById("admin-panel").style.display = "block";
+  
+}
 // =========================
 // 🔄 CARGAR PRODUCTOS
 // =========================
@@ -234,11 +234,10 @@ function limpiarInputs() {
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
 
-  cargarProductos();
-
   document
     .getElementById("formulario")
-    .addEventListener("submit", agregarProducto);
+    .addEventListener("submit", agregarProducto)
+    cargarProductos();
 
 });
 
