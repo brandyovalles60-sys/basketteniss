@@ -16,7 +16,9 @@ function loginAdmin() {
 
   alert("✅ Acceso guardado");
 }
-document.getElementById("formulario").style.display = "block";
+document.getElementById("login-admin").style.display = "none";
+document.getElementById("admin-panel").style.display = "block";
+cargarProductos();
 
 // =========================
 // 🔄 CARGAR PRODUCTOS
