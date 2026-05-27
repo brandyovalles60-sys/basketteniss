@@ -2,8 +2,14 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-
+const cors = require("cors");
 const app = express();
+
+app.use(cors({
+  origin: "https://basketteniss.netlify.app",
+  methods: ["GET", "POST", "DELETE"],
+  allowedHeaders: ["Content-Type", "admin-user", "admin-pass"]
+}));
 
 app.use(express.json());
 

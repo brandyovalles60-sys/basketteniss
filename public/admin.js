@@ -18,6 +18,7 @@ function loginAdmin() {
 
   document.getElementById("login-admin").style.display = "none";
   document.getElementById("admin-panel").style.display = "block";
+  cargarProductos();
   
 }
 // =========================
@@ -237,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("formulario")
     .addEventListener("submit", agregarProducto)
-    cargarProductos();
+    
 
 });
 
