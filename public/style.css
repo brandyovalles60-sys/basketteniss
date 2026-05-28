@@ -1320,3 +1320,57 @@ body {
     padding: 18px !important;
   }
 }
+
+/* ELIMINAR MOVIMIENTO HORIZONTAL EN CELULAR */
+html,
+body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: clip !important;
+}
+
+body {
+  position: relative;
+}
+
+@media (max-width: 768px) {
+
+  * {
+    box-sizing: border-box !important;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  header,
+  main,
+  section,
+  .hero,
+  .brands,
+  .productos,
+  .catalogo,
+  #grid-productos,
+  .brands-grid {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .hero {
+    width: calc(100vw - 28px) !important;
+    max-width: calc(100vw - 28px) !important;
+    margin-left: 14px !important;
+    margin-right: 14px !important;
+  }
+
+  .cart-btn,
+  .cart-button,
+  #cart-btn {
+    right: 16px !important;
+    left: auto !important;
+  }
+}
