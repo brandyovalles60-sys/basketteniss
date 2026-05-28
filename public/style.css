@@ -1270,3 +1270,53 @@ body {
     box-shadow: 0 18px 38px rgba(0,0,0,0.12);
   }
 }
+
+/* AJUSTE FINAL MOBILE HEADER + HERO */
+@media (max-width: 768px) {
+
+  header {
+    align-items: center !important;
+    text-align: center !important;
+    position: relative !important;
+  }
+
+  .logo {
+    font-size: 22px !important;
+    letter-spacing: 6px !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto 12px !important;
+  }
+
+  nav {
+    width: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 32px !important;
+  }
+
+  nav a {
+    font-size: 17px !important;
+  }
+
+  .menu-btn,
+  .more-btn,
+  .dots-btn,
+  #menu-btn,
+  #more-btn {
+    position: fixed !important;
+    left: 14px !important;
+    top: 95px !important;
+    right: auto !important;
+    z-index: 9999 !important;
+  }
+
+  .hero img,
+  .hero video {
+    height: 470px !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: #ed1c0d !important;
+    padding: 18px !important;
+  }
+}
