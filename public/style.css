@@ -1419,3 +1419,41 @@ body {
     font-size: 22px !important;
   }
 }
+
+/* 3 PUNTOS FIJO A LA IZQUIERDA EN CELULAR */
+@media (max-width: 768px) {
+
+  .settings-btn {
+    position: fixed !important;
+    left: 16px !important;
+    top: 118px !important;
+    right: auto !important;
+
+    width: 58px !important;
+    height: 58px !important;
+
+    border-radius: 18px !important;
+    background: rgba(255,255,255,0.96) !important;
+    color: #E52B15 !important;
+
+    font-size: 28px !important;
+    border: none !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-shadow: 0 12px 28px rgba(0,0,0,0.16) !important;
+    z-index: 999999 !important;
+  }
+
+  .settings-menu {
+    position: fixed !important;
+    left: 16px !important;
+    top: 185px !important;
+    right: auto !important;
+    width: 230px !important;
+    border-radius: 20px !important;
+    z-index: 999999 !important;
+  }
+}
