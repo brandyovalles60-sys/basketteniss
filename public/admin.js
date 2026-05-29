@@ -3,22 +3,27 @@ console.log("🔥 ADMIN JS CONECTADO 🔥");
 let productos = [];
 
 const API_URL = "https://basketteniss-api.onrender.com";
+const ADMIN_USER = "brandy";
+const ADMIN_PASS = "BasketTeniss2026*";
 
 
 
 
 function loginAdmin() {
-  ADMIN_USER = document.getElementById("adminUser").value;
-  ADMIN_PASS = document.getElementById("adminPass").value;
+  const user = document.getElementById("adminUser").value;
+  const pass = document.getElementById("adminPass").value;
 
-  
+  if (user !== ADMIN_USER || pass !== ADMIN_PASS) {
+    alert("❌ Usuario o contraseña incorrectos");
+    return;
+  }
 
-  alert("✅ Acceso guardado");
+  alert("✅ Acceso correcto");
 
   document.getElementById("login-admin").style.display = "none";
   document.getElementById("admin-panel").style.display = "block";
+
   cargarProductos();
-  
 }
 // =========================
 // 🔄 CARGAR PRODUCTOS
@@ -181,47 +186,27 @@ async function agregarProducto(e) {
 // ❌ ELIMINAR
 // =========================
 async function eliminarProducto(id) {
-
   try {
-
-    const usuario = localStorage.getItem("ADMIN_USER");
-
-    const password = localStorage.getItem("ADMIN_PASS");
-
-    console.log(usuario);
-    console.log(password);
-
     const res = await fetch(`${API_URL}/productos/${id}`, {
-
       method: "DELETE",
-
       headers: {
-        "admin-user": usuario,
-        "admin-pass": password
+        "admin-user": ADMIN_USER,
+        "admin-pass": ADMIN_PASS
       }
-
     });
 
     const data = await res.json();
 
-    console.log(data);
-
     if (!res.ok) {
-
       throw new Error(data.error || "Error al eliminar");
-
     }
 
     alert("✅ Producto eliminado");
-
     cargarProductos();
 
   } catch (error) {
-
     console.error(error);
-
     alert("❌ Error al eliminar");
-
   }
 }
 
