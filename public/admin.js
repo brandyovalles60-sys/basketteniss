@@ -185,22 +185,35 @@ async function eliminarProducto(id) {
 
   try {
 
+    const usuario = localStorage.getItem("ADMIN_USER");
+
+    const password = localStorage.getItem("ADMIN_PASS");
+
+    console.log(usuario);
+    console.log(password);
+
     const res = await fetch(`${API_URL}/productos/${id}`, {
 
       method: "DELETE",
 
       headers: {
-        "admin-user": ADMIN_USER,
-        "admin-pass": ADMIN_PASS
+        "admin-user": usuario,
+        "admin-pass": password
       }
 
     });
 
+    const data = await res.json();
+
+    console.log(data);
+
     if (!res.ok) {
 
-      throw new Error("Error al eliminar");
+      throw new Error(data.error || "Error al eliminar");
 
     }
+
+    alert("✅ Producto eliminado");
 
     cargarProductos();
 
@@ -209,6 +222,7 @@ async function eliminarProducto(id) {
     console.error(error);
 
     alert("❌ Error al eliminar");
+
   }
 }
 
