@@ -8,6 +8,15 @@ const ADMIN_PASS = "BasketTeniss2026*";
 
 
 
+function adminHeaders() {
+  return {
+    "admin-user": ADMIN_USER,
+    "admin-pass": ADMIN_PASS
+  };
+}
+
+
+
 
 function loginAdmin() {
   const user = document.getElementById("adminUser").value;
@@ -149,10 +158,8 @@ async function agregarProducto(e) {
 
       method: "POST",
 
-      headers: {
-        "admin-user": ADMIN_USER,
-        "admin-pass": ADMIN_PASS
-    },
+      
+    headers: adminHeaders(),
 
       body: formData
 
@@ -189,10 +196,7 @@ async function eliminarProducto(id) {
   try {
     const res = await fetch(`${API_URL}/productos/${id}`, {
       method: "DELETE",
-      headers: {
-        "admin-user": ADMIN_USER,
-        "admin-pass": ADMIN_PASS
-      }
+      headers: adminHeaders()
     });
 
     const data = await res.json();

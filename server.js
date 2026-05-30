@@ -62,14 +62,14 @@ app.get("/productos", (req, res) => {
 
 
 function verificarAdmin(req, res, next) {
-  const user = req.headers["admin-user"];
-  const pass = req.headers["admin-pass"];
+  const user = String(req.headers["admin-user"] || "").trim();
+  const pass = String(req.headers["admin-pass"] || "").trim();
 
-  if (user === process.env.ADMIN_USER && pass === process.env.ADMIN_PASS) {
-    next();
-  } else {
-    res.status(401).json({ error: "No autorizado" });
+  if (user === "brandy" && pass === "BasketTeniss2026*") {
+    return next();
   }
+
+  return res.status(401).json({ error: "No autorizado" });
 }
 
 // ==========================
