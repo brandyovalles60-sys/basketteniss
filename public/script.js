@@ -61,4 +61,25 @@ function scrollToSection(id) {
   });
 }
 
+function filtrarTipo(tipo, boton) {
+  document.querySelectorAll(".mini-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  if (boton) {
+    boton.classList.add("active");
+  }
+
+  if (tipo === "Todos") {
+    renderProductos(productos);
+    return;
+  }
+
+  const filtrados = productos.filter(
+    p => p.tipo && p.tipo.toLowerCase() === tipo.toLowerCase()
+  );
+
+  renderProductos(filtrados);
+}
+
 cargarProductos();
