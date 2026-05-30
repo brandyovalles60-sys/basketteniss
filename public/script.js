@@ -30,7 +30,7 @@ function renderProductos(lista) {
 
   lista.forEach(p => {
     grid.innerHTML += `
-      <div class="card">
+      <div class="card" onclick="abrirProducto(${p.id})">
         <div class="card-img">
           <img src="${p.imagen}">
         </div>
@@ -43,6 +43,30 @@ function renderProductos(lista) {
       </div>
     `;
   });
+}
+
+let productoSeleccionado = null;
+
+function abrirProducto(id) {
+  productoSeleccionado = productos.find(p => p.id === id);
+
+  if (!productoSeleccionado) return;
+
+  document.getElementById("popup-img").src = productoSeleccionado.imagen;
+  document.getElementById("popup-nombre").textContent = productoSeleccionado.nombre;
+  document.getElementById("popup-marca").textContent = productoSeleccionado.marca;
+  document.getElementById("popup-precio").textContent = "RD$ " + productoSeleccionado.precio;
+
+  document.getElementById("popup-add-btn").onclick = function () {
+    addCart(productoSeleccionado.id);
+    cerrarProducto();
+  };
+
+  document.getElementById("product-popup").classList.add("open");
+}
+
+function cerrarProducto() {
+  document.getElementById("product-popup").classList.remove("open");
 }
 
 function openCart() {
