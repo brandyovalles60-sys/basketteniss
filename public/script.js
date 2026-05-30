@@ -8,12 +8,16 @@ async function cargarProductos() {
   const res = await fetch(`${API_URL}/productos`);
   productos = await res.json();
 
+  console.log("PRODUCTOS CARGADOS:", productos);
+
   renderProductos(productos);
 }
 
 function filtrarMarca(marca) {
+  scrollToSection("productos");
+
   const filtrados = productos.filter(
-    p => p.marca.toLowerCase() === marca.toLowerCase()
+    p => p.marca && p.marca.trim().toLowerCase() === marca.trim().toLowerCase()
   );
 
   renderProductos(filtrados);
