@@ -14,13 +14,19 @@ async function cargarProductos() {
 }
 
 function filtrarMarca(marca) {
-  scrollToSection("productos");
+  const seccionProductos = document.getElementById("productos");
+
+  seccionProductos.style.display = "block";
 
   const filtrados = productos.filter(
     p => p.marca && p.marca.trim().toLowerCase() === marca.trim().toLowerCase()
   );
 
   renderProductos(filtrados);
+
+  seccionProductos.scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
 function renderProductos(lista) {
@@ -84,6 +90,11 @@ function sendWA() {
   window.open(`https://wa.me/18494250473?text=${encodeURIComponent(msg)}`, "_blank");
 }
 function scrollToSection(id) {
+  if (id === "productos") {
+    document.getElementById("productos").style.display = "block";
+    renderProductos(productos);
+  }
+
   document.getElementById(id).scrollIntoView({
     behavior: "smooth"
   });
