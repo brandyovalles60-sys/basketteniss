@@ -55,5 +55,10 @@ function sendWA() {
   const msg = "Hola, quiero hacer un pedido en BasketTeniss.";
   window.open(`https://wa.me/18494250473?text=${encodeURIComponent(msg)}`, "_blank");
 }
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({
+    behavior: "smooth"
+  });
+}
 
 cargarProductos();
