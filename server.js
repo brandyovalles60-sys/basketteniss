@@ -97,35 +97,50 @@ function verificarAdmin(req, res, next) {
 // ==========================
 // POST (CON IMAGEN + DATOS)
 // ==========================
-app.post("/productos", verificarAdmin, upload.single("imagen"), (req, res) => {
-  console.log("🔥 SERVER RECIBIÓ PETICIÓN");
-  console.log(req.body);
-  console.log(req.file);
-  const { nombre, marca, precio, categoria, descripcion, tipo } = req.body;
+// ==========================
+// POST GUARDAR PRODUCTO EN SUPABASE
+// ==========================
+app.post("/productos", verificarAdmin, upload.single("imagen"), async (req, res) => {
+  try {
+    console.log("🔥 SERVER RECIBIÓ PETICIÓN SUPABASE");
+    console.log(req.body);
+    console.log(req.file);
 
-  if (!nombre || !marca || !precio || !categoria || !tipo) {
-    return res.status(400).json({ error: "Faltan datos" });
+    const { nombre, marca, precio, categoria, descripcion, tipo } = req.body;
+
+    if (!nombre || !marca || !precio || !categoria || !tipo) {
+      return res.status(400).json({ error: "Faltan datos" });
+    }
+
+    const nuevo = {
+      nombre,
+      marca,
+      precio,
+      categoria,
+      tipo,
+      descripcion: descripcion || "",
+      imagen: req.file
+        ? `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`
+        : ""
+    };
+
+    const { data, error } = await supabase
+      .from("productos")
+      .insert([nuevo])
+      .select()
+      .single();
+
+    if (error) {
+      console.log("❌ ERROR SUPABASE:", error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    res.json(data);
+
+  } catch (error) {
+    console.log("❌ ERROR SERVER:", error);
+    res.status(500).json({ error: error.message });
   }
-
-  const productos = leerProductos();
-
-  const nuevo = {
-    id: Date.now(),
-    nombre,
-    marca,
-    precio,
-    categoria,
-    tipo,
-    descripcion: descripcion || "",
-    imagen: req.file
-      ? `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`
-      : ""
-  };
-
-  productos.push(nuevo);
-  guardarProductos(productos);
-
-  res.json(nuevo);
 });
 
 
