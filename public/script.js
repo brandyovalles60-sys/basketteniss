@@ -249,31 +249,53 @@ function sendWA() {
     return acc + Number(item.precio) * item.qty;
   }, 0);
 
-  let msg = "🏀 *BASKETTENISS*%0A";
-  msg += "Nueva solicitud de compra%0A%0A";
+  let msg = `🏀 *BASKETTENISS*
+━━━━━━━━━━━━━━
+
+Hola, me interesa el siguiente pedido:
+
+`;
 
   cart.forEach((item, index) => {
     const subtotal = Number(item.precio) * item.qty;
 
-    msg += `📦 *Producto ${index + 1}:* ${item.nombre}%0A`;
-    msg += `🏷️ Marca: ${item.marca}%0A`;
-    msg += `📏 Talla: ${item.talla}%0A`;
-    msg += `🔢 Cantidad: ${item.qty}%0A`;
-    msg += `💰 Precio unitario: RD$ ${Number(item.precio).toLocaleString()}%0A`;
-    msg += `💵 Subtotal: RD$ ${subtotal.toLocaleString()}%0A`;
+    msg += `📦 *Producto ${index + 1}*
+`;
+
+    msg += `🔹 Modelo: ${item.nombre}
+`;
+    msg += `🔹 Marca: ${item.marca}
+`;
+    msg += `🔹 Talla: ${item.talla}
+`;
+    msg += `🔹 Cantidad: ${item.qty}
+`;
+    msg += `🔹 Precio: RD$ ${Number(item.precio).toLocaleString()}
+`;
+    msg += `🔹 Subtotal: RD$ ${subtotal.toLocaleString()}
+
+`;
 
     if (item.imagen) {
-      msg += `🖼️ Ver imagen: ${item.imagen}%0A`;
-    }
+      msg += `🖼️ Imagen:
+${item.imagen}
 
-    msg += "%0A";
+`;
+    }
   });
 
-  msg += `🧾 *Total estimado:* RD$ ${totalPedido.toLocaleString()}%0A%0A`;
-  msg += "¿Está disponible?%0A";
-  msg += "Gracias.";
+  msg += `━━━━━━━━━━━━━━
 
-  window.open(`https://wa.me/18494250473?text=${msg}`, "_blank");
+💰 *TOTAL ESTIMADO: RD$ ${totalPedido.toLocaleString()}*
+
+¿Está disponible?
+
+Muchas gracias.`;
+
+  window.open(
+    `https://wa.me/18494250473?text=${encodeURIComponent(msg)}`,
+    "_blank"
+  );
 }
 
 
