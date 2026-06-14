@@ -151,6 +151,7 @@ async function agregarProducto(e) {
     formData.append("categoria", document.getElementById("categoria").value);
     formData.append("descripcion", document.getElementById("descripcion").value);
     formData.append("tipo", document.getElementById("tipo").value);
+    formData.append("tallas", document.getElementById("tallas").value);
 
     const imagen = document.getElementById("imagen").files[0];
 
@@ -227,6 +228,7 @@ function prepararEditarProducto(producto) {
   document.getElementById("categoria").value = producto.categoria;
   document.getElementById("tipo").value = producto.tipo;
   document.getElementById("descripcion").value = producto.descripcion || "";
+  document.getElementById("tallas").value = producto.tallas || "";
 
   document.getElementById("imagen").required = false;
   document.getElementById("btn-submit").textContent = "Guardar cambios";
@@ -263,6 +265,8 @@ function limpiarInputs() {
   document.getElementById("categoria").value = "";
 
   document.getElementById("descripcion").value = "";
+
+  document.getElementById("tallas").value = "";
 
   document.getElementById("imagen").value = "";
 

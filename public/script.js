@@ -5,6 +5,7 @@ const API_URL = "https://basketteniss-api.onrender.com";
 let productos = [];
 let cart = [];
 let productoSeleccionado = null;
+let tallaSeleccionada = "";
 
 async function cargarProductos() {
   const res = await fetch(`${API_URL}/productos`);
@@ -96,6 +97,7 @@ function scrollToSection(id) {
 
 function abrirProducto(id) {
   productoSeleccionado = productos.find(p => p.id === id);
+  tallaSeleccionada = "";
 
   if (!productoSeleccionado) return;
 
@@ -104,28 +106,66 @@ function abrirProducto(id) {
   document.getElementById("popup-marca").textContent = productoSeleccionado.marca;
   document.getElementById("popup-precio").textContent = "RD$ " + productoSeleccionado.precio;
 
+  const tallasBox = document.getElementById("popup-tallas");
+  tallasBox.innerHTML = "";
+
+  const tallas = productoSeleccionado.tallas
+    ? productoSeleccionado.tallas.split(",").map(t => t.trim()).filter(t => t !== "")
+    : [];
+
+  if (tallas.length === 0) {
+    tallasBox.innerHTML = "<p>No hay tallas registradas</p>";
+  } else {
+    tallas.forEach(talla => {
+      tallasBox.innerHTML += `
+        <button class="talla-btn" onclick="seleccionarTalla('${talla}', this)">
+          ${talla}
+        </button>
+      `;
+    });
+  }
+
   document.getElementById("popup-add-btn").onclick = function () {
-    addCart(productoSeleccionado.id);
+    if (!tallaSeleccionada) {
+      alert("⚠️ Selecciona una talla primero");
+      return;
+    }
+
+    addCart(productoSeleccionado.id, tallaSeleccionada);
     cerrarProducto();
   };
 
   document.getElementById("product-popup").classList.add("open");
 }
 
+function seleccionarTalla(talla, boton) {
+  tallaSeleccionada = talla;
+
+  document.querySelectorAll(".talla-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  boton.classList.add("active");
+}
+
 function cerrarProducto() {
   document.getElementById("product-popup").classList.remove("open");
 }
 
-function addCart(id) {
+function addCart(id, talla) {
   const producto = productos.find(p => p.id === id);
   if (!producto) return;
 
-  const existe = cart.find(item => item.id === id);
+  const existe = cart.find(item => item.id === id && item.talla === talla);
 
   if (existe) {
     existe.qty++;
   } else {
-    cart.push({ ...producto, qty: 1 });
+    cart.push({
+      ...producto,
+      talla,
+      qty: 1
+    });
   }
 
   updateCartUI();
@@ -158,6 +198,7 @@ function updateCartUI() {
     <div class="cart-product-info">
       <strong>${item.nombre}</strong>
       <p>${item.marca}</p>
+      <p><strong>Talla:</strong> ${item.talla}</p>
       <p>RD$ ${item.precio} x ${item.qty}</p>
 
       <button onclick="removeCart(${item.id})">
@@ -180,8 +221,24 @@ function closeCart() {
 }
 
 function sendWA() {
-  const msg = "Hola, quiero hacer un pedido en BasketTeniss.";
-  window.open(`https://wa.me/18494250473?text=${encodeURIComponent(msg)}`, "_blank");
+  if (cart.length === 0) {
+    alert("Tu carrito está vacío");
+    return;
+  }
+
+  let msg = "🏀 Hola BasketTeniss.%0A%0AMe interesa este pedido:%0A%0A";
+
+  cart.forEach(item => {
+    msg += `👟 Producto: ${item.nombre}%0A`;
+    msg += `📏 Talla: ${item.talla}%0A`;
+    msg += `💰 Precio: RD$ ${item.precio}%0A`;
+    msg += `🏷️ Marca: ${item.marca}%0A`;
+    msg += `Cantidad: ${item.qty}%0A%0A`;
+  });
+
+  msg += "¿Está disponible?%0A%0AGracias.";
+
+  window.open(`https://wa.me/18494250473?text=${msg}`, "_blank");
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

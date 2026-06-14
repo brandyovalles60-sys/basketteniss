@@ -106,7 +106,7 @@ app.post("/productos", verificarAdmin, upload.single("imagen"), async (req, res)
     console.log(req.body);
     console.log(req.file);
 
-    const { nombre, marca, precio, categoria, descripcion, tipo } = req.body;
+    const { nombre, marca, precio, categoria, descripcion, tipo, tallas } = req.body;
 
     if (!nombre || !marca || !precio || !categoria || !tipo) {
       return res.status(400).json({ error: "Faltan datos" });
@@ -118,6 +118,7 @@ app.post("/productos", verificarAdmin, upload.single("imagen"), async (req, res)
       precio,
       categoria,
       tipo,
+      tallas: tallas || "",
       descripcion: descripcion || "",
       imagen: req.file
         ? `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`
@@ -150,7 +151,7 @@ app.post("/productos", verificarAdmin, upload.single("imagen"), async (req, res)
 app.put("/productos/:id", verificarAdmin, upload.single("imagen"), async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const { nombre, marca, precio, categoria, descripcion, tipo } = req.body;
+    const { nombre, marca, precio, categoria, descripcion, tipo, tallas } = req.body;
 
     const actualizado = {
       nombre,
@@ -158,6 +159,7 @@ app.put("/productos/:id", verificarAdmin, upload.single("imagen"), async (req, r
       precio,
       categoria,
       tipo,
+      tallas: tallas || "",
       descripcion: descripcion || ""
     };
 

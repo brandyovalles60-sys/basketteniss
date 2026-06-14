@@ -1897,3 +1897,36 @@ body {
   color: #777;
   grid-column: 1 / -1;
 }
+
+/* TALLAS PRODUCTO */
+.tallas-box {
+  margin: 18px 0;
+}
+
+.tallas-box p {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tallas-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.talla-btn {
+  background: #f4f4f4;
+  color: #111;
+  border: 1px solid #ddd;
+  min-width: 48px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.talla-btn.active {
+  background: #E52B15;
+  color: white;
+  border-color: #E52B15;
+}
