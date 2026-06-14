@@ -2072,3 +2072,92 @@ body {
     font-size: 24px;
   }
 }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.settings-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #fff;
+  color: #E52B15;
+  font-size: 26px;
+  font-weight: bold;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  border: none;
+}
+
+.settings-menu {
+  position: fixed;
+  top: 92px;
+  right: 110px;
+  background: white;
+  padding: 14px;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.settings-menu.open {
+  display: flex;
+}
+
+.settings-menu button {
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: #f5f5f5;
+  color: #111;
+  font-weight: bold;
+  text-align: left;
+}
+
+.dark-mode {
+  background: #111;
+  color: white;
+}
+
+.dark-mode .section,
+.dark-mode .nav {
+  background: #111;
+}
+
+.dark-mode .card,
+.dark-mode .marca-card {
+  background: #1c1c1c;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
+  .nav-actions {
+    position: absolute;
+    right: 14px;
+    top: 18px;
+    gap: 10px;
+  }
+
+  .settings-btn,
+  .cart-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+
+  .settings-menu {
+    top: 86px;
+    right: 14px;
+    width: 210px;
+  }
+}

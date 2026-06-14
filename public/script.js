@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 console.log("🔥 TIENDA CARGADA");
 
 const API_URL = "https://basketteniss-api.onrender.com";
@@ -313,3 +314,18 @@ function cambiarCantidad(valor) {
 document.addEventListener("DOMContentLoaded", async () => {
   await cargarProductos();
 });
+
+function toggleSettings() {
+  const menu = document.getElementById("settings-menu");
+  menu.classList.toggle("open");
+}
+
+function activarModo(modo) {
+  if (modo === "oscuro") {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
+
+  document.getElementById("settings-menu").classList.remove("open");
+}
