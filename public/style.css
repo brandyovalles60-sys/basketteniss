@@ -1964,3 +1964,111 @@ body {
   font-size: 22px;
   font-weight: bold;
 }
+
+/* =========================
+   POPUP PRODUCTO PREMIUM FINAL
+========================= */
+
+.product-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.68);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 99999;
+}
+
+.product-popup.open {
+  display: flex;
+}
+
+.product-popup-card {
+  position: relative;
+  width: min(92vw, 420px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.38);
+}
+
+.product-popup-card .close-btn {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 20px;
+  z-index: 10;
+}
+
+.product-popup-card img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 22px;
+  background: #f6f6f6;
+}
+
+.product-popup-card h2 {
+  margin: 16px 0 6px;
+  font-size: 24px;
+}
+
+.product-popup-card h3 {
+  color: #E52B15;
+  font-size: 26px;
+  margin: 12px 0;
+}
+
+.tallas-opciones {
+  justify-content: center;
+}
+
+.product-popup-card .add-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #E52B15;
+  color: white;
+  font-weight: 900;
+  font-size: 17px;
+}
+
+@media (max-width: 600px) {
+  .product-popup {
+    padding: 14px;
+    align-items: center;
+  }
+
+  .product-popup-card {
+    width: 94vw;
+    max-height: 86vh;
+    padding: 18px;
+    border-radius: 26px;
+  }
+
+  .product-popup-card img {
+    max-height: 230px;
+  }
+
+  .product-popup-card h2 {
+    font-size: 21px;
+  }
+
+  .product-popup-card h3 {
+    font-size: 24px;
+  }
+}
