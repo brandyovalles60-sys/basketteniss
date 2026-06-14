@@ -132,13 +132,22 @@ function updateCartUI() {
   }
 
   cartItems.innerHTML = cart.map(item => `
-    <div class="cart-item">
+  <div class="cart-item premium-cart-item">
+
+    <img class="cart-product-img" src="${item.imagen}" alt="${item.nombre}">
+
+    <div class="cart-product-info">
       <strong>${item.nombre}</strong>
       <p>${item.marca}</p>
       <p>RD$ ${item.precio} x ${item.qty}</p>
-      <button onclick="removeCart(${item.id})">Quitar</button>
+
+      <button onclick="removeCart(${item.id})">
+        Quitar
+      </button>
     </div>
-  `).join("");
+
+  </div>
+`).join("");
 }
 
 function openCart() {
