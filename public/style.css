@@ -2523,7 +2523,6 @@ body {
   }
 
 }
-/* PRODUCTOS MOBILE PREMIUM */
 @media (max-width: 768px) {
 
   #grid-productos,
@@ -2531,43 +2530,18 @@ body {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 14px !important;
-    padding: 12px !important;
+
+    padding-left: 6px !important;
+    padding-right: 18px !important;
+
     justify-content: center !important;
+    margin: 0 auto !important;
   }
 
   .card {
     width: 100% !important;
     max-width: 180px !important;
     margin: 0 auto !important;
-    border-radius: 22px !important;
-    overflow: hidden !important;
   }
 
-  .card-img img {
-    width: 100% !important;
-    height: auto !important;
-    display: block !important;
-  }
-
-  .card-body {
-    text-align: center !important;
-    padding: 12px !important;
-  }
-
-  .card-body h3 {
-    font-size: 16px !important;
-    line-height: 1.2 !important;
-    margin-bottom: 8px !important;
-    min-height: 40px !important;
-  }
-
-  .card-body p {
-    margin: 4px 0 !important;
-  }
-
-  .price {
-    font-size: 18px !important;
-    font-weight: bold !important;
-    color: #E52B15 !important;
-  }
 }
