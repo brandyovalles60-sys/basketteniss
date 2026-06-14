@@ -3,7 +3,17 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const cors = require("cors");
+const { createClient } = require("@supabase/supabase-js");
 const app = express();
+
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
+
+
+
 
 app.use(cors({
   origin: [
@@ -58,8 +68,17 @@ function guardarProductos(data) {
 // ==========================
 // GET
 // ==========================
-app.get("/productos", (req, res) => {
-  res.json(leerProductos());
+app.get("/productos", async (req, res) => {
+  const { data, error } = await supabase
+    .from("productos")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.json(data);
 });
 
 
@@ -110,46 +129,69 @@ app.post("/productos", verificarAdmin, upload.single("imagen"), (req, res) => {
 });
 
 
-app.put("/productos/:id", verificarAdmin, upload.single("imagen"), (req, res) => {
-  const id = Number(req.params.id);
-  const { nombre, marca, precio, categoria, descripcion, tipo } = req.body;
+// ==========================
+// PUT EDITAR PRODUCTO EN SUPABASE
+// ==========================
+app.put("/productos/:id", verificarAdmin, upload.single("imagen"), async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { nombre, marca, precio, categoria, descripcion, tipo } = req.body;
 
-  const productos = leerProductos();
-  const index = productos.findIndex(p => p.id === id);
+    const actualizado = {
+      nombre,
+      marca,
+      precio,
+      categoria,
+      tipo,
+      descripcion: descripcion || ""
+    };
 
-  if (index === -1) {
-    return res.status(404).json({ error: "Producto no encontrado" });
+    if (req.file) {
+      actualizado.imagen = `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`;
+    }
+
+    const { data, error } = await supabase
+      .from("productos")
+      .update(actualizado)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    res.json(data);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  productos[index] = {
-    ...productos[index],
-    nombre,
-    marca,
-    precio,
-    categoria,
-    tipo,
-    descripcion: descripcion || "",
-    imagen: req.file
-      ? `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`
-      : productos[index].imagen
-  };
-
-  guardarProductos(productos);
-
-  res.json(productos[index]);
 });
 
 // ==========================
 // DELETE (BIEN HECHO)
 // ==========================
-app.delete("/productos/:id", verificarAdmin, (req, res) => {
-  const id = Number(req.params.id);
+// ==========================
+// DELETE BORRAR PRODUCTO EN SUPABASE
+// ==========================
+app.delete("/productos/:id", verificarAdmin, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
 
-  const productos = leerProductos().filter(p => p.id !== id);
+    const { error } = await supabase
+      .from("productos")
+      .delete()
+      .eq("id", id);
 
-  guardarProductos(productos);
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
 
-  res.json({ mensaje: "Producto eliminado" });
+    res.json({ mensaje: "Producto eliminado" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // ==========================
