@@ -6,7 +6,10 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors({
-  origin: "https://basketteniss.netlify.app",
+  origin: [
+    "https://basketteniss.netlify.app",
+    "https://basketteniss-api.onrender.com"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "admin-user", "admin-pass"]
 }));
