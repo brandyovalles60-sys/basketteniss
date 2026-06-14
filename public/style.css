@@ -1930,3 +1930,37 @@ body {
   color: white;
   border-color: #E52B15;
 }
+
+/* CANTIDAD EN POPUP */
+.cantidad-box {
+  margin: 18px 0;
+  text-align: center;
+}
+
+.cantidad-box p {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.cantidad-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.cantidad-control button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #E52B15;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.cantidad-control span {
+  min-width: 35px;
+  font-size: 22px;
+  font-weight: bold;
+}

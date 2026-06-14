@@ -6,6 +6,7 @@ let productos = [];
 let cart = [];
 let productoSeleccionado = null;
 let tallaSeleccionada = "";
+let cantidadSeleccionada = 1;
 
 async function cargarProductos() {
   const res = await fetch(`${API_URL}/productos`);
@@ -96,8 +97,13 @@ function scrollToSection(id) {
 }
 
 function abrirProducto(id) {
+  
   productoSeleccionado = productos.find(p => p.id === id);
   tallaSeleccionada = "";
+
+  cantidadSeleccionada = 1;
+
+  document.getElementById("popup-cantidad").textContent = "1";
 
   if (!productoSeleccionado) return;
 
@@ -131,7 +137,7 @@ function abrirProducto(id) {
       return;
     }
 
-    addCart(productoSeleccionado.id, tallaSeleccionada);
+    addCart(productoSeleccionado.id, tallaSeleccionada, cantidadSeleccionada);
     cerrarProducto();
   };
 
@@ -152,19 +158,19 @@ function cerrarProducto() {
   document.getElementById("product-popup").classList.remove("open");
 }
 
-function addCart(id, talla) {
+function addCart(id, talla, cantidad) {
   const producto = productos.find(p => p.id === id);
   if (!producto) return;
 
   const existe = cart.find(item => item.id === id && item.talla === talla);
 
   if (existe) {
-    existe.qty++;
+    existe.qty += cantidad;
   } else {
     cart.push({
       ...producto,
       talla,
-      qty: 1
+      qty: cantidad
     });
   }
 
@@ -244,3 +250,15 @@ function sendWA() {
 document.addEventListener("DOMContentLoaded", async () => {
   await cargarProductos();
 });
+
+
+function cambiarCantidad(valor) {
+  cantidadSeleccionada += valor;
+
+  if (cantidadSeleccionada < 1) {
+    cantidadSeleccionada = 1;
+  }
+
+  document.getElementById("popup-cantidad").textContent =
+    cantidadSeleccionada;
+}
