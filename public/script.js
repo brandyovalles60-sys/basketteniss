@@ -9,10 +9,21 @@ let tallaSeleccionada = "";
 let cantidadSeleccionada = 1;
 
 async function cargarProductos() {
-  const res = await fetch(`${API_URL}/productos`);
-  productos = await res.json();
+  try {
+    const res = await fetch(`${API_URL}/productos`);
 
-  console.log("PRODUCTOS CARGADOS:", productos);
+    if (!res.ok) {
+      throw new Error("No se pudieron cargar productos");
+    }
+
+    productos = await res.json();
+
+    console.log("PRODUCTOS CARGADOS:", productos);
+
+  } catch (error) {
+    console.error("ERROR CARGANDO PRODUCTOS:", error);
+    productos = [];
+  }
 }
 
 function mostrarProductos(lista) {
@@ -80,14 +91,16 @@ function filtrarTipo(tipo, boton) {
   mostrarProductos(filtrados);
 }
 
-function scrollToSection(id) {
+async function scrollToSection(id) {
   const seccion = document.getElementById(id);
 
   if (!seccion) return;
 
   if (id === "productos") {
-    const productosSection = document.getElementById("productos");
-    productosSection.style.display = "block";
+    if (!productos || productos.length === 0) {
+      await cargarProductos();
+    }
+
     mostrarProductos(productos);
   }
 
@@ -274,3 +287,7 @@ function cambiarCantidad(valor) {
   document.getElementById("popup-cantidad").textContent =
     cantidadSeleccionada;
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await cargarProductos();
+});
