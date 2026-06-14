@@ -2195,3 +2195,37 @@ body {
     width: 210px;
   }
 }
+
+/* FIX FINAL 3 PUNTOS MOBILE */
+@media (max-width: 600px) {
+  .settings-btn {
+    position: fixed !important;
+    top: 110px !important;
+    right: 22px !important;
+    left: auto !important;
+    z-index: 99999 !important;
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 18px !important;
+  }
+
+  .settings-menu {
+    position: fixed !important;
+    top: 178px !important;
+    right: 18px !important;
+    left: auto !important;
+    width: 230px !important;
+    z-index: 99999 !important;
+  }
+
+  .nav-actions {
+    position: static !important;
+  }
+
+  .cart-btn {
+    position: fixed !important;
+    right: 22px !important;
+    bottom: 34px !important;
+    z-index: 9999 !important;
+  }
+}
