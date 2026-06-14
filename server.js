@@ -45,6 +45,32 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+async function subirImagenSupabase(file) {
+  if (!file) return "";
+
+  const fileBuffer = fs.readFileSync(file.path);
+  const fileName = `${Date.now()}-${file.originalname}`;
+
+  const { error } = await supabase.storage
+    .from("productos")
+    .upload(fileName, fileBuffer, {
+      contentType: file.mimetype,
+      upsert: true
+    });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const { data } = supabase.storage
+    .from("productos")
+    .getPublicUrl(fileName);
+
+  fs.unlinkSync(file.path);
+
+  return data.publicUrl;
+}
+
 // servir imágenes subidas
 app.use("/uploads", express.static("uploads"));
 
@@ -120,9 +146,8 @@ app.post("/productos", verificarAdmin, upload.single("imagen"), async (req, res)
       tipo,
       tallas: tallas || "",
       descripcion: descripcion || "",
-      imagen: req.file
-        ? `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`
-        : ""
+      imagen: await subirImagenSupabase(req.file)
+       
     };
 
     const { data, error } = await supabase
@@ -164,7 +189,7 @@ app.put("/productos/:id", verificarAdmin, upload.single("imagen"), async (req, r
     };
 
     if (req.file) {
-      actualizado.imagen = `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`;
+      actualizado.imagen = await subirImagenSupabase(req.file);
     }
 
     const { data, error } = await supabase
