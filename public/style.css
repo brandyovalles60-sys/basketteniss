@@ -2071,6 +2071,40 @@ body {
   .product-popup-card h3 {
     font-size: 24px;
   }
+
+  @media (max-width: 600px) {
+  .nav-actions {
+    position: absolute;
+    top: 96px;
+    right: 18px;
+    z-index: 1000;
+  }
+
+  .settings-btn {
+    position: absolute;
+    top: -72px;
+    right: 0;
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+  }
+
+  .cart-btn {
+    position: fixed;
+    right: 22px;
+    bottom: 34px;
+    width: 86px;
+    height: 76px;
+    border-radius: 22px;
+    z-index: 9999;
+  }
+
+  .settings-menu {
+    top: 150px;
+    right: 18px;
+    width: 230px;
+  }
+}
 }
 
 .nav-actions {
