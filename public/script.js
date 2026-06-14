@@ -17,8 +17,18 @@ function mostrarProductos(lista) {
   const seccion = document.getElementById("productos");
   const grid = document.getElementById("grid-productos");
 
+  if (!seccion || !grid) {
+    console.error("No existe la sección productos o grid-productos");
+    return;
+  }
+
   seccion.style.display = "block";
   grid.innerHTML = "";
+
+  if (!lista || lista.length === 0) {
+    grid.innerHTML = "<p style='text-align:center;'>No hay productos disponibles.</p>";
+    return;
+  }
 
   lista.forEach(p => {
     grid.innerHTML += `
@@ -35,8 +45,6 @@ function mostrarProductos(lista) {
       </div>
     `;
   });
-
-  seccion.scrollIntoView({ behavior: "smooth" });
 }
 
 function filtrarMarca(marca) {
@@ -45,6 +53,10 @@ function filtrarMarca(marca) {
   );
 
   mostrarProductos(filtrados);
+
+  document.getElementById("productos").scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
 function filtrarTipo(tipo, boton) {
@@ -67,12 +79,19 @@ function filtrarTipo(tipo, boton) {
 }
 
 function scrollToSection(id) {
+  const seccion = document.getElementById(id);
+
+  if (!seccion) return;
+
   if (id === "productos") {
+    const productosSection = document.getElementById("productos");
+    productosSection.style.display = "block";
     mostrarProductos(productos);
-    return;
   }
 
-  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+  seccion.scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
 function abrirProducto(id) {
