@@ -62,54 +62,74 @@ async function cargarProductos() {
 // =========================
 // 🎨 MOSTRAR PRODUCTOS
 // =========================
-function renderProductos() {
+function renderProductos(lista = productos) {
 
-  const lista = document.getElementById("lista");
+  const contenedor = document.getElementById("lista");
 
-  if (!lista) return;
+  if (!contenedor) return;
 
-  lista.innerHTML = "";
+  contenedor.innerHTML = "";
 
-  productos.forEach((p) => {
+  if (!lista || lista.length === 0) {
+    contenedor.innerHTML = `
+      <div class="admin-empty">
+        No hay productos para mostrar
+      </div>
+    `;
+    return;
+  }
+
+  lista.forEach((p) => {
 
     const card = document.createElement("div");
 
-    card.className = "producto-card";
+    card.className = "admin-product-card";
 
     const precioFormateado = new Intl.NumberFormat("es-DO", {
       style: "currency",
       currency: "DOP"
-    }).format(p.precio);
+    }).format(Number(p.precio));
 
     card.innerHTML = `
 
-      <img src="${p.imagen}" width="150">
+      <div class="admin-product-img-box">
+        <img src="${p.imagen}" alt="${p.nombre}">
+      </div>
 
-      <h3>${p.nombre}</h3>
+      <div class="admin-product-info">
+        <h3>${p.nombre}</h3>
 
-      <p>${p.marca}</p>
+        <p><strong>Marca:</strong> ${p.marca}</p>
+        <p><strong>Tipo:</strong> ${p.tipo || ""}</p>
+        <p><strong>Categoría:</strong> ${p.categoria || ""}</p>
+        <p class="admin-price">${precioFormateado}</p>
+      </div>
 
-      <p><strong>${precioFormateado}</strong></p>
+      <div class="admin-actions">
+        <button class="btn-editar">
+          Editar
+        </button>
 
-      <p>${p.categoria}</p>
-
-      <p>${p.descripcion || ""}</p>
-
-      <button class="btn-eliminar">
-        Eliminar
-      </button>
+        <button class="btn-eliminar">
+          Eliminar
+        </button>
+      </div>
 
     `;
 
     card
       .querySelector(".btn-eliminar")
       .addEventListener("click", () => {
-
         eliminarProducto(p.id);
-
       });
 
-    lista.appendChild(card);
+    card
+      .querySelector(".btn-editar")
+      .addEventListener("click", () => {
+        prepararEditarProducto(p);
+      });
+
+    contenedor.appendChild(card);
 
   });
 }
@@ -118,74 +138,58 @@ function renderProductos() {
 // ➕ AGREGAR PRODUCTO
 // =========================
 async function agregarProducto(e) {
-
   e.preventDefault();
 
   try {
+    const productoId = document.getElementById("productoId").value;
 
-    console.log("🚀 AGREGANDO PRODUCTO");
+    const formData = new FormData();
 
-    const nombre = document.getElementById("nombre").value;
-
-    const marca = document.getElementById("marca").value;
-
-    const precio = document.getElementById("precio").value;
-
-    const categoria = document.getElementById("categoria").value;
-
-    const descripcion = document.getElementById("descripcion").value;
-
-    const tipo = document.getElementById("tipo").value;
+    formData.append("nombre", document.getElementById("nombre").value);
+    formData.append("marca", document.getElementById("marca").value);
+    formData.append("precio", document.getElementById("precio").value);
+    formData.append("categoria", document.getElementById("categoria").value);
+    formData.append("descripcion", document.getElementById("descripcion").value);
+    formData.append("tipo", document.getElementById("tipo").value);
 
     const imagen = document.getElementById("imagen").files[0];
 
-    if (!imagen) {
+    if (imagen) {
+      formData.append("imagen", imagen);
+    }
+
+    if (!productoId && !imagen) {
       alert("❌ Debes seleccionar una imagen");
       return;
     }
 
-    const formData = new FormData();
+    const url = productoId
+      ? `${API_URL}/productos/${productoId}`
+      : `${API_URL}/productos`;
 
-    formData.append("nombre", nombre);
-    formData.append("marca", marca);
-    formData.append("precio", precio);
-    formData.append("categoria", categoria);
-    formData.append("descripcion", descripcion);
-    formData.append("tipo", tipo);
-    formData.append("imagen", imagen);
+    const metodo = productoId ? "PUT" : "POST";
 
-    const res = await fetch(`${API_URL}/productos`, {
-
-      method: "POST",
-
-      
-    headers: adminHeaders(),
-
+    const res = await fetch(url, {
+      method: metodo,
+      headers: adminHeaders(),
       body: formData
-
     });
 
     const data = await res.json();
 
-    console.log(data);
-
     if (!res.ok) {
-
       throw new Error(data.error || "Error");
-
     }
 
-    alert("✅ PRODUCTO AGREGADO");
+    alert(productoId ? "✅ Producto actualizado" : "✅ Producto agregado");
 
     limpiarInputs();
-
+    cancelarEdicion();
     cargarProductos();
 
   } catch (error) {
-
     console.error(error);
-
-    alert("❌ ERROR AL AGREGAR PRODUCTO");
+    alert("❌ ERROR AL GUARDAR PRODUCTO");
   }
 }
 
@@ -214,6 +218,37 @@ async function eliminarProducto(id) {
   }
 }
 
+
+function prepararEditarProducto(producto) {
+  document.getElementById("productoId").value = producto.id;
+  document.getElementById("nombre").value = producto.nombre;
+  document.getElementById("marca").value = producto.marca;
+  document.getElementById("precio").value = producto.precio;
+  document.getElementById("categoria").value = producto.categoria;
+  document.getElementById("tipo").value = producto.tipo;
+  document.getElementById("descripcion").value = producto.descripcion || "";
+
+  document.getElementById("imagen").required = false;
+  document.getElementById("btn-submit").textContent = "Guardar cambios";
+  document.getElementById("btn-cancelar-edicion").style.display = "block";
+
+  if (producto.imagen) {
+    document.getElementById("preview-img").src = producto.imagen;
+  }
+
+  document.getElementById("formulario").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function cancelarEdicion() {
+  document.getElementById("productoId").value = "";
+  document.getElementById("btn-submit").textContent = "Agregar";
+  document.getElementById("btn-cancelar-edicion").style.display = "none";
+  document.getElementById("imagen").required = true;
+  document.getElementById("preview-img").src = "";
+}
+
 // =========================
 // 🧹 LIMPIAR
 // =========================
@@ -230,6 +265,30 @@ function limpiarInputs() {
   document.getElementById("descripcion").value = "";
 
   document.getElementById("imagen").value = "";
+
+  document.getElementById("productoId").value = "";
+
+  document.getElementById("preview-img").src = "";
+}
+
+
+function buscarProductos() {
+  const texto = document
+    .getElementById("buscador-productos")
+    .value
+    .toLowerCase()
+    .trim();
+
+  const filtrados = productos.filter((p) => {
+    return (
+      p.nombre?.toLowerCase().includes(texto) ||
+      p.marca?.toLowerCase().includes(texto) ||
+      p.categoria?.toLowerCase().includes(texto) ||
+      p.tipo?.toLowerCase().includes(texto)
+    );
+  });
+
+  renderProductos(filtrados);
 }
 
 // =========================
@@ -239,8 +298,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document
     .getElementById("formulario")
-    .addEventListener("submit", agregarProducto)
-    
+    .addEventListener("submit", agregarProducto);
+
+  document
+    .getElementById("buscador-productos")
+    .addEventListener("input", buscarProductos);
 
 });
 

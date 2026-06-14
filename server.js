@@ -7,7 +7,7 @@ const app = express();
 
 app.use(cors({
   origin: "https://basketteniss.netlify.app",
-  methods: ["GET", "POST", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "admin-user", "admin-pass"]
 }));
 
@@ -104,6 +104,36 @@ app.post("/productos", verificarAdmin, upload.single("imagen"), (req, res) => {
   guardarProductos(productos);
 
   res.json(nuevo);
+});
+
+
+app.put("/productos/:id", verificarAdmin, upload.single("imagen"), (req, res) => {
+  const id = Number(req.params.id);
+  const { nombre, marca, precio, categoria, descripcion, tipo } = req.body;
+
+  const productos = leerProductos();
+  const index = productos.findIndex(p => p.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: "Producto no encontrado" });
+  }
+
+  productos[index] = {
+    ...productos[index],
+    nombre,
+    marca,
+    precio,
+    categoria,
+    tipo,
+    descripcion: descripcion || "",
+    imagen: req.file
+      ? `https://basketteniss-api.onrender.com/uploads/${req.file.filename}`
+      : productos[index].imagen
+  };
+
+  guardarProductos(productos);
+
+  res.json(productos[index]);
 });
 
 // ==========================

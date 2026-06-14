@@ -24,6 +24,7 @@
   <h2>Agregar producto</h2>
 
   <form id="formulario">
+    <input type="hidden" id="productoId">
 
     <input id="nombre" name="nombre" placeholder="Nombre del producto" required>
     <input id="marca" name="marca" placeholder="Marca" required>
@@ -53,14 +54,35 @@
       <img id="preview-img" src="" alt="">
     </div>
 
-    <button type="submit">Agregar</button>
+    <button
+      type="submit"
+      id="btn-submit">
+      Agregar
+    </button>
+
+    <button
+      type="button"
+      id="btn-cancelar-edicion"
+      onclick="cancelarEdicion()"
+      style="display:none;">
+      Cancelar edición
+    </button>
 
   </form>
 
   <hr>
 
+  <div class="admin-list-header">
   <h2>Lista de productos</h2>
-  <div id="lista"></div>
+
+  <input
+    type="text"
+    id="buscador-productos"
+    placeholder="Buscar por nombre, marca o categoría..."
+  >
+</div>
+
+<div id="lista" class="admin-product-grid"></div>
 
 </div>
 
